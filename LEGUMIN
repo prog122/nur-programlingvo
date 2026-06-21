@@ -1,0 +1,22 @@
+"Nur programlingvo" (NP) - nur programlingvo
+
+Ekzemplo de simpla programo:
+
+-------------
+eligo Saluton
+-------------
+     --> 
+-------------
+Saluton
+-------------
+
+node np-al-idvm.js
+Por traduki instrukcion en IDVM (vidu https://github.com/prog122/vm/blob/mastro/virtmaŝ/priskribita-la-meza-lingvo)
+
+node np-al-kodobjektoj.js
+Por transformi instrukciojn en objektojn por vidi ilin
+
+node np-interpretisto.js
+Por ruli skriptan dosieron
+
+Normoj en la dosiero "normoj"
