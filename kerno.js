@@ -138,12 +138,18 @@ const legFunkcio = (ĉeno) => {
   return kodajPecoj;
 }
 
-const transformiKodonEnInstrukciojn = (kodajPecoj) => {
+const transformiKodonEnInstrukciojn = (kodajPecoj, npilTabelo = {}) => {
   const instrukcioj = kodajPecoj.map(verkiloDeKodoobjektoj);
 
   instrukcioj.push(['revena']);
 
-  return instrukcioj;
+  return instrukcioj.map(instrukcio => {
+    if (npilTabelo[instrukcio[0]]) {
+      instrukcio[0] = npilTabelo[instrukcio[0]];
+    }
+
+    return instrukcio;
+  });
 }
 
 const legiLaTabelonNPL = (dosiero) => {
@@ -153,6 +159,25 @@ const legiLaTabelonNPL = (dosiero) => {
     let datumoj = fs.readFileSync(dosiero, "utf8").trim();
     datumoj.split("\n").map(linio => {
       let [valoro, ŝlosilo] = linio.trim().split(" ");
+      tabelo[ŝlosilo] = valoro;
+    });
+  } catch(eraro) {
+    if (eraro) {
+      console.error("Eraro ĉe legado de dosiero:", eraro);
+      return null;
+    }
+  }
+
+  return tabelo;
+};
+
+const legiLaTabelonNPIL = (dosiero) => {
+  let tabelo = {};
+
+  try {
+    let datumoj = fs.readFileSync(dosiero, "utf8").trim();
+    datumoj.split("\n").map(linio => {
+      let [ŝlosilo, valoro] = linio.trim().split(" ");
       tabelo[ŝlosilo] = valoro;
     });
   } catch(eraro) {
@@ -182,4 +207,4 @@ const tradukiKomandojn = (komandojn, npl) => {
   });
 };
 
-export { legFunkcio, transformiKodonEnInstrukciojn, legiLaTabelonNPL, tradukiKomandojn };
+export { legFunkcio, transformiKodonEnInstrukciojn, legiLaTabelonNPL, legiLaTabelonNPIL, tradukiKomandojn };

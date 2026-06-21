@@ -2,12 +2,8 @@ const assert = require('assert');
 const { exec } = require("child_process");
 const path = require('path');
 
-const kunDosieroEligon = (dosiero, funkcio, nplDosiero) => {
-  let komando = "node np-al-idvm.js -e " + dosiero;
-
-  if (nplDosiero) {
-    komando += " -l " + nplDosiero;
-  }
+const kunDosieroEligon = (dosiero, funkcio, parametroj = "") => {
+  let komando = "node np-al-idvm.js -e " + dosiero + parametroj;
 
   exec(komando, (error, stdout, stderr) => {
     if (error) {
@@ -19,7 +15,7 @@ const kunDosieroEligon = (dosiero, funkcio, nplDosiero) => {
   });
 }
 
-const asertiLaEligonDeLaIDVM = (dosierNomo, eligo, nplDosiero) => {
+const asertiLaEligonDeLaIDVM = (dosierNomo, eligo, parametroj) => {
   kunDosieroEligon(dosierNomo, (ĉeno) => {
     if (ĉeno != eligo) {
       process.stdout.write("------\n")
@@ -42,15 +38,11 @@ const asertiLaEligonDeLaIDVM = (dosierNomo, eligo, nplDosiero) => {
     }
 
     assert.ok(ĉeno == eligo);
-  }, nplDosiero)
+  }, parametroj)
 };
 
-const kunLaEligoDeLaKodoobjektoj = (dosiero, funkcio, nplDosiero) => {
-  let komando = "node np-al-kodobjektoj.js " + dosiero;
-
-  if (nplDosiero) {
-    komando += " -l " + nplDosiero;
-  }
+const kunLaEligoDeLaKodoobjektoj = (dosiero, funkcio, parametroj = '') => {
+  let komando = "node np-al-kodobjektoj.js " + dosiero + parametroj;
 
   exec(komando, (error, stdout, stderr) => {
     if (error) {
@@ -62,7 +54,7 @@ const kunLaEligoDeLaKodoobjektoj = (dosiero, funkcio, nplDosiero) => {
   });
 }
 
-const asertiLaEligonDeLaKodoobjektoj = (dosiero, eligo, nplDosiero) => {
+const asertiLaEligonDeLaKodoobjektoj = (dosiero, eligo, parametroj) => {
   kunLaEligoDeLaKodoobjektoj(dosiero, (ĉeno) => {
     if (ĉeno != eligo) {
       process.stdout.write("------\n")
@@ -85,15 +77,11 @@ const asertiLaEligonDeLaKodoobjektoj = (dosiero, eligo, nplDosiero) => {
     }
     
     assert.ok(ĉeno == eligo);
-  }, nplDosiero);
+  }, parametroj);
 }
 
-const kunLaEligoDeLaProgramo = (dosiero, funkcio, nplDosiero) => {
-  let komando = "node np-interpretisto.js " + dosiero;
-
-  if (nplDosiero) {
-    komando += " -l " + nplDosiero;
-  }
+const kunLaEligoDeLaProgramo = (dosiero, funkcio, parametroj = '') => {
+  let komando = "node np-interpretisto.js " + dosiero + parametroj;
 
   exec(komando, (error, stdout, stderr) => {
     if (error) {
@@ -105,7 +93,7 @@ const kunLaEligoDeLaProgramo = (dosiero, funkcio, nplDosiero) => {
   });
 }
 
-const asertiLaEligonDeLaProgramo = (dosierNomo, eligo, nplDosiero) => {
+const asertiLaEligonDeLaProgramo = (dosierNomo, eligo, parametroj) => {
   kunLaEligoDeLaProgramo(dosierNomo, (ĉeno) => {
     if (ĉeno != eligo) {
       process.stdout.write("---\n")
@@ -116,7 +104,7 @@ const asertiLaEligonDeLaProgramo = (dosierNomo, eligo, nplDosiero) => {
     }
 
     assert.ok(ĉeno == eligo);
-  }, nplDosiero)
+  }, parametroj)
 }
 
 const aserti = assert.ok;
