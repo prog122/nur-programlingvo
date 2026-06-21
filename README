@@ -10,6 +10,18 @@ eligi Saluton
 Saluton
 -------------
 
+Ekzemplo de plurlingva uzo de "Nur programlingvo"
+
+node -l alia-aro-da-vortoj-por-Esperanto.npl np-interpretisto.js
+
+-------------
+montri Saluton
+-------------
+     --> 
+-------------
+Saluton
+-------------
+
 node np-al-idvm.js
 Por traduki instrukcion en IDVM (vidu https://github.com/prog122/vm/blob/mastro/virtmaŝ/priskribita-la-meza-lingvo)
 
@@ -18,5 +30,8 @@ Por transformi instrukciojn en objektojn por vidi ilin
 
 node np-interpretisto.js
 Por ruli skriptan dosieron
+
+NPL - nur programlingvo lingvopako, datumformato por ŝanĝi NP-ŝlosilvortojn por ebligi krei programlingvojn en ajna lingvo aŭ dialekto
+vidu la dosieron alia-Esperanto.npl
 
 Normoj en la dosiero "normoj"

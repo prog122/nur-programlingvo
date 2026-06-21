@@ -1,4 +1,5 @@
 import { verkiloDeKodoobjektoj } from './verkilo-de-kodoobjektoj.js';
+import fs from 'fs';
 
 const vera = true, malvera = false;
 
@@ -145,4 +146,40 @@ const transformiKodonEnInstrukciojn = (kodajPecoj) => {
   return instrukcioj;
 }
 
-export { legFunkcio, transformiKodonEnInstrukciojn };
+const legiLaTabelonNPL = (dosiero) => {
+  let tabelo = {};
+
+  try {
+    let datumoj = fs.readFileSync(dosiero, "utf8").trim();
+    datumoj.split("\n").map(linio => {
+      let [valoro, ŝlosilo] = linio.trim().split(" ");
+      tabelo[ŝlosilo] = valoro;
+    });
+  } catch(eraro) {
+    if (eraro) {
+      console.error("Eraro ĉe legado de dosiero:", eraro);
+      return null;
+    }
+  }
+
+  return tabelo;
+};
+
+const tradukiKomandojn = (komandojn, npl) => {
+  if (!npl) {
+    return komandojn;
+  }
+
+  return komandojn.map(komando => {
+    if (komando.tipo == 'listo') {
+      komando.infanojn = tradukiKomandojn(komando.infanojn, npl);
+      if (npl[komando.infanojn[0].valoro]) {
+        komando.infanojn[0].valoro = npl[komando.infanojn[0].valoro];
+      }
+    }
+
+    return komando;
+  });
+};
+
+export { legFunkcio, transformiKodonEnInstrukciojn, legiLaTabelonNPL, tradukiKomandojn };
