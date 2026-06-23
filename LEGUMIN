@@ -1,14 +1,14 @@
 "Nur programlingvo" (NP) - nur programlingvo
 
-Ekzemplo de simpla programo:
+Ekzemplo de simpla programo skribita diversmaniere:
 
--------------
-eligi Saluton
--------------
-     --> 
--------------
-Saluton
--------------
+-------------  ---------------  ---------------
+eligi Saluton  (eligi Saluton)  eligi "Saluton"
+-------------  ---------------  ---------------
+     -->            -->             -->
+-------------  ---------------  ---------------
+Saluton        Saluton          Saluton
+-------------  ---------------  ---------------
 
 Ekzemplo de plurlingva uzo de "Nur programlingvo"
 

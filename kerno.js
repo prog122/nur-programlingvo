@@ -82,6 +82,7 @@ const komencoFinoLegFunkcio = (ĉeno, serĉanteInfanojn = false, gepatro = {}) =
 
   while (!finita) {
     kodajPeco = ekstraktiLaSekvanKodajPeco(ĉeno.slice(indekso), serĉanteInfanojn, gepatro);
+
     kodajPecoj.push(kodajPeco);
 
     indekso += kodajPeco.finoIndekso;
@@ -96,10 +97,10 @@ const komencoFinoLegFunkcio = (ĉeno, serĉanteInfanojn = false, gepatro = {}) =
 const postproceso = (kodajPeco) => {
   if (kodajPeco.komencoDatumo.finaSymbolo) {
     let finaSymboloEl = simbolojDeBloko.find((el) => {
-      return el[0] == kodajPeco.komencoDatumo.finaSymbolo;
+      return el[1] == kodajPeco.komencoDatumo.finaSymbolo;
     });
 
-    if (finaSymboloEl[2] && finaSymboloEl[2].postproceso) {
+    if (finaSymboloEl.length > 2 && finaSymboloEl[2].postproceso) {
       kodajPeco.ĉeno = finaSymboloEl[2].postproceso(kodajPeco.ĉeno);
     }
   }
@@ -128,7 +129,13 @@ const kodopecoEnObjekto = (kodopeco) => {
 const legFunkcio = (ĉeno) => {
   let kodajPecoj = komencoFinoLegFunkcio(ĉeno);
   kodajPecoj.map(kodajPeco => {
-    kodajPeco.infanojn = komencoFinoLegFunkcio(kodajPeco.ĉeno, true, kodajPeco);
+    let ĉeno = kodajPeco.ĉeno;
+
+    if (kodajPeco.komencoDatumo.finaSymbolo == ')') {
+      ĉeno = ĉeno.slice(1, -1);
+    }
+
+    kodajPeco.infanojn = komencoFinoLegFunkcio(ĉeno, true, kodajPeco);
   });
 
   kodajPecoj = kodajPecoj.map(postproceso);
