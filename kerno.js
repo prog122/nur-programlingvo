@@ -3,12 +3,19 @@ import fs from 'fs';
 
 const vera = true, malvera = false;
 
-//const verkiloDeKodoobjektoj = require('verkilo-de-kodoobjektoj.js').verkiloDeKodoobjektoj;
-
 const simbolojDeBloko = [
-  ['(', ')'],
-  ['{', '}'],
-  ['<', '>'],
+  ['(', ')', {
+    estasKodbloko: true,
+    postproceso: (ĉeno) => {
+      return ĉeno.slice(1, -1);
+    }
+  }],
+  ['{', '}', {
+    estasKodbloko: true
+  }],
+  ['<', '>', {
+    estasKodbloko: true
+  }],
   ['"', '"', {
     postproceso: (ĉeno) => {
       return ĉeno.slice(1, -1);
@@ -17,11 +24,17 @@ const simbolojDeBloko = [
   ["'", "'"]
 ];
 
+// @g
+// Kontrolo ĉu objekto estas malplena en JavaScript
+function estasMalplena(objekto) {
+  return Object.keys(objekto).length === 0;
+}
+
 const estasKomencoDeBloko = (ĉeno, i) => {
   return ĉeno[i] != ' ';
 };
 
-const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfanojn) => {
+const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfanojn, antaŭaPecoDeKodo) => {
   if (komencoDatumo.finaSymbolo) {
     if (komencoDatumo.finasSymbolo == ĉeno[i]) {
       return true;
@@ -30,31 +43,42 @@ const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfa
 
   let estasFinita = i == ĉeno.length - 1;
   if (!estasFinita && serĉanteInfanojn) {
-    return ĉeno[i + 1] == ' ';
+    estasFinita = ((estasMalplena(antaŭaPecoDeKodo) || antaŭaPecoDeKodo.kodoKomenciĝis) && ĉeno[i + 1] == ' ' && !komencoDatumo.finaSymbolo)
+      || !!simbolojDeBloko.find((tabelo) => {
+           return tabelo[2] && tabelo[2].estasKodbloko && tabelo[0] == ĉeno[i + 1];
+         });
   }
 
   return estasFinita;
 };
 
-const finoDeBlokoDatumo = (ĉeno, i, komencoIndekso, komencoDatumo) => {
+const finoDeBlokoDatumo = (ĉeno, i, komencoIndekso, komencoDatumo, antaŭaPecoDeKodo) => {
+  let normalaVokadaNotacio = !!simbolojDeBloko.find((tabelo) => {
+    return tabelo[2] && tabelo[2].estasKodbloko && tabelo[0] == ĉeno[i + 1];
+  });
+
   return {
     ĉeno: ĉeno.slice(komencoIndekso, i + 1),
     komencoIndekso: komencoIndekso,
     finoIndekso: i + 1,
-    komencoDatumo: komencoDatumo
+    komencoDatumo: komencoDatumo,
+    normalaVokadaNotacio: normalaVokadaNotacio,
+    estasKomencaElemento: estasMalplena(antaŭaPecoDeKodo),
+    kodoKomenciĝis: antaŭaPecoDeKodo.kodoKomenciĝis || ĉeno[komencoIndekso] == '"'
   };
 }
 
-const ekstraktiLaSekvanKodajPeco = (ĉeno, serĉanteInfanojn = false) => {
+const ekstraktiLaSekvanKodajPeco = (ĉeno, serĉanteInfanojn = false, gepatro = {}, antaŭaPecoDeKodo = {}) => {
   let komencoIndekso = -1;
   let komencoDatumo = {};
-  
+
   for (let i=0;i < ĉeno.length;i++) {
     if (komencoIndekso == -1 && estasKomencoDeBloko(ĉeno, i)) {
       komencoIndekso = i;
       komencoDatumo = {
         finaSymbolo: null
       };
+
       simbolojDeBloko.map((datumo) => {
         let [komencoS, finoS] = datumo;
 
@@ -64,8 +88,8 @@ const ekstraktiLaSekvanKodajPeco = (ĉeno, serĉanteInfanojn = false) => {
       });
     }
 
-    if (estasFinoDeBloko(ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfanojn)) {
-      let datumo = finoDeBlokoDatumo(ĉeno, i, komencoIndekso, komencoDatumo);
+    if (estasFinoDeBloko(ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfanojn, antaŭaPecoDeKodo)) {
+      let datumo = finoDeBlokoDatumo(ĉeno, i, komencoIndekso, komencoDatumo, antaŭaPecoDeKodo);
       return datumo;
     }
   }
@@ -81,12 +105,19 @@ const komencoFinoLegFunkcio = (ĉeno, serĉanteInfanojn = false, gepatro = {}) =
   let kodajPeco = null;
 
   while (!finita) {
-    kodajPeco = ekstraktiLaSekvanKodajPeco(ĉeno.slice(indekso), serĉanteInfanojn, gepatro);
+    kodajPeco = ekstraktiLaSekvanKodajPeco(
+      ĉeno.slice(indekso),
+      serĉanteInfanojn,
+      gepatro,
+      kodajPecoj.length ? kodajPecoj[kodajPecoj.length - 1] : {}
+    );
 
     kodajPecoj.push(kodajPeco);
 
     indekso += kodajPeco.finoIndekso;
-    indekso ++;
+    if (!kodajPeco.normalaVokadaNotacio) {
+      indekso ++;
+    }
 
     finita = typeof(ĉeno[indekso]) == 'undefined';
   }
@@ -95,12 +126,14 @@ const komencoFinoLegFunkcio = (ĉeno, serĉanteInfanojn = false, gepatro = {}) =
 };
 
 const postproceso = (kodajPeco) => {
-  if (kodajPeco.komencoDatumo.finaSymbolo) {
+  if (kodajPeco.komencoDatumo.finaSymbolo && !kodajPeco.postprocesaOkazis) {
     let finaSymboloEl = simbolojDeBloko.find((el) => {
       return el[1] == kodajPeco.komencoDatumo.finaSymbolo;
     });
 
     if (finaSymboloEl.length > 2 && finaSymboloEl[2].postproceso) {
+      kodajPeco.originaĈeno = kodajPeco.ĉeno;
+      kodajPeco.postprocesaOkazis = vera;
       kodajPeco.ĉeno = finaSymboloEl[2].postproceso(kodajPeco.ĉeno);
     }
   }
@@ -128,12 +161,9 @@ const kodopecoEnObjekto = (kodopeco) => {
 
 const legFunkcio = (ĉeno) => {
   let kodajPecoj = komencoFinoLegFunkcio(ĉeno);
+  kodajPecoj = kodajPecoj.map(postproceso);
   kodajPecoj.map(kodajPeco => {
     let ĉeno = kodajPeco.ĉeno;
-
-    if (kodajPeco.komencoDatumo.finaSymbolo == ')') {
-      ĉeno = ĉeno.slice(1, -1);
-    }
 
     kodajPeco.infanojn = komencoFinoLegFunkcio(ĉeno, true, kodajPeco);
   });

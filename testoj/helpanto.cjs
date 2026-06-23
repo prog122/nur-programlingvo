@@ -1,18 +1,12 @@
 const assert = require('assert');
-const { exec } = require("child_process");
+const { execSync } = require("child_process");
 const path = require('path');
 
-const kunDosieroEligon = (dosiero, funkcio, parametroj = "") => {
+const kunDosieroEligon = async (dosiero, funkcio, parametroj = "") => {
   let komando = "node np-al-idvm.js -e " + dosiero + parametroj;
 
-  exec(komando, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Eraro: ${error.message}`);
-      return;
-    }
-
-    funkcio(stdout);
-  });
+  let eligo = execSync(komando);
+  funkcio(eligo.toString());
 }
 
 const asertiLaEligonDeLaIDVM = (dosierNomo, eligo, parametroj) => {
@@ -44,14 +38,9 @@ const asertiLaEligonDeLaIDVM = (dosierNomo, eligo, parametroj) => {
 const kunLaEligoDeLaKodoobjektoj = (dosiero, funkcio, parametroj = '') => {
   let komando = "node np-al-kodobjektoj.js " + dosiero + parametroj;
 
-  exec(komando, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Eraro: ${error.message}`);
-      return;
-    }
+  let eligo = execSync(komando);
 
-    funkcio(stdout.trim());
-  });
+  funkcio(eligo.toString().trim());
 }
 
 const asertiLaEligonDeLaKodoobjektoj = (dosiero, eligo, parametroj) => {
@@ -83,14 +72,9 @@ const asertiLaEligonDeLaKodoobjektoj = (dosiero, eligo, parametroj) => {
 const kunLaEligoDeLaProgramo = (dosiero, funkcio, parametroj = '') => {
   let komando = "node np-interpretisto.js " + dosiero + parametroj;
 
-  exec(komando, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Eraro: ${error.message}`);
-      return;
-    }
+  let eligo = execSync(komando);
 
-    funkcio(stdout);
-  });
+  funkcio(eligo);
 }
 
 const asertiLaEligonDeLaProgramo = (dosierNomo, eligo, parametroj) => {
