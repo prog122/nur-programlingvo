@@ -8,3 +8,5 @@ require('./testoj/7.js'); // normala vokada notacio eligi
 require('./testoj/8.js'); // normala vokada notacio eligi
 require('./testoj/9.js'); // minimuma formo eligi
 require('./testoj/10.js'); // prefiksa formo eligi
+require('./testoj/11.js'); // prefiksa formo krei-funkcion, voki-funkcion
+require('./testoj/12.js'); // prefiksa formo krei-funkcion, voki-funkcion
