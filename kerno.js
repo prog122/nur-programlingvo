@@ -43,7 +43,8 @@ const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfa
 
   let estasFinita = i == ĉeno.length - 1;
   if (!estasFinita && serĉanteInfanojn) {
-    estasFinita = ((estasMalplena(antaŭaPecoDeKodo) || antaŭaPecoDeKodo.kodoKomenciĝis) && ĉeno[i + 1] == ' ' && !komencoDatumo.finaSymbolo)
+    estasFinita = ((estasMalplena(antaŭaPecoDeKodo) || antaŭaPecoDeKodo.kodoKomenciĝis)
+                  && (ĉeno[i + 1] == ' ' || ĉeno[i + 1] == "\n") && !komencoDatumo.finaSymbolo)
       || ((ĉeno[i] != ' ')
           && !!simbolojDeBloko.find((tabelo) => {
             return tabelo[2] && tabelo[2].estasKodbloko && tabelo[0] == ĉeno[i + 1];

@@ -10,3 +10,4 @@ require('./testoj/9.js'); // minimuma formo eligi
 require('./testoj/10.js'); // prefiksa formo eligi
 require('./testoj/11.js'); // prefiksa formo krei-funkcion, voki-funkcion
 require('./testoj/12.js'); // prefiksa formo krei-funkcion, voki-funkcion
+require('./testoj/13.js'); // prefiksa formo krei-funkcion, voki-funkcion
