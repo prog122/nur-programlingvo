@@ -17,9 +17,9 @@ for( let i=0;i < argumentoj.length;i++ ) {
 }
 
 if (dosieroj.length == 0) {
-  process.stdout.write("Uzado: node np-kodoobjektoj.js <vojo al dosiero>")
+  process.stdout.write("Uzado: node np-kodobjektoj.js <vojo al dosiero>")
   process.stdout.write("\npor eligo de kodo kiel objekto")
-  process.stdout.write("\n\nnode np-al-kodoobjektoj.js -l <vojo al NPL dosiero> <vojo al dosiero>\npor eligi tradukita instrukcioj")
+  process.stdout.write("\n\nnode np-al-kodobjektoj.js -l <vojo al NPL dosiero> <vojo al dosiero>\npor eligi tradukita instrukcioj")
   process.exit();
 }
 

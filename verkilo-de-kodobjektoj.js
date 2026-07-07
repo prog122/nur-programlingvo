@@ -4,7 +4,7 @@ const sekvaRegistro = () => {
   return registraNumbrilo;
 };
 
-const verkiloDeKodoobjektoj = (kodobjekto) => {
+const verkiloDeKodobjektoj = (kodobjekto) => {
   if (kodobjekto.tipo == 'listo') {
     if (kodobjekto.infanoj.every(infano => { return infano.tipo == 'datumo'; })) {
       kodobjekto.kodobjektoj = [kodobjekto.infanoj.map(inf => {
@@ -16,7 +16,7 @@ const verkiloDeKodoobjektoj = (kodobjekto) => {
 
     if (kodobjekto.infanoj[0].tipo == 'datumo' && kodobjekto.infanoj[0].valoro == 'krei-funkcion') {
       const registro = sekvaRegistro();
-      kodobjekto.infanoj = kodobjekto.infanoj.map(verkiloDeKodoobjektoj)
+      kodobjekto.infanoj = kodobjekto.infanoj.map(verkiloDeKodobjektoj)
       kodobjekto.registro = registro;
       kodobjekto.kodobjektoj = [['difini-fermaĵo', registro]];
       kodobjekto.infanoj.slice(1).map((ko) => {
@@ -28,15 +28,15 @@ const verkiloDeKodoobjektoj = (kodobjekto) => {
     }
 
     if (kodobjekto.infanoj[0].tipo == 'datumo' && kodobjekto.infanoj[0].valoro == 'voki-funkcion') {
-      kodobjekto.infanoj = kodobjekto.infanoj.map(verkiloDeKodoobjektoj)
+      kodobjekto.infanoj = kodobjekto.infanoj.map(verkiloDeKodobjektoj)
       kodobjekto.kodobjektoj = kodobjekto.infanoj[1].kodobjektoj.concat([['voki', kodobjekto.infanoj[1].registro]]);
       return kodobjekto;
     }
 
-    return kodobjekto.infanoj.map(verkiloDeKodoobjektoj);
+    return kodobjekto.infanoj.map(verkiloDeKodobjektoj);
   }
 
   return kodobjekto;
 };
 
-export { verkiloDeKodoobjektoj };
+export { verkiloDeKodobjektoj };

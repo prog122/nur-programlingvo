@@ -1,4 +1,4 @@
-import { verkiloDeKodoobjektoj } from './verkilo-de-kodoobjektoj.js';
+import { verkiloDeKodobjektoj } from './verkilo-de-kodobjektoj.js';
 import fs from 'fs';
 
 const vera = true, malvera = false;
@@ -225,7 +225,7 @@ const legFunkcio = (ĉeno) => {
 
 const transformiKodonEnInstrukciojn = (kodajPecoj, npilTabelo = {}) => {
   let instrukcioj = [];
-  kodajPecoj.map(verkiloDeKodoobjektoj).map(kodobjekto => {
+  kodajPecoj.map(verkiloDeKodobjektoj).map(kodobjekto => {
     instrukcioj = instrukcioj.concat(kodobjekto.kodobjektoj);
   });
 
