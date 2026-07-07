@@ -168,18 +168,18 @@ const postproceso = (kodajPeco) => {
     }
   }
 
-  if (kodajPeco.infanojn) {
-    kodajPeco.infanojn = kodajPeco.infanojn.map(postproceso);
+  if (kodajPeco.infanoj) {
+    kodajPeco.infanoj = kodajPeco.infanoj.map(postproceso);
   }
 
   return kodajPeco;
 };
 
 const kodopecoEnObjekto = (kodopeco) => {
-  if (kodopeco.infanojn) {
+  if (kodopeco.infanoj) {
     return {
       'tipo': 'listo',
-      'infanojn': kodopeco.infanojn.map(kodopecoEnObjekto)
+      'infanoj': kodopeco.infanoj.map(kodopecoEnObjekto)
     }
   }
 
@@ -194,9 +194,9 @@ const ekstraktiKodpecoIdoj = (kodajPeco) => {
   let ĉeno = kodajPeco.ĉeno;
 
   if (!kodajPeco.estasAtomara) {
-    kodajPeco.infanojn = komencoFinoLegFunkcio(ĉeno, true, kodajPeco);
-    kodajPeco.infanojn.map(postproceso);
-    kodajPeco.infanojn.map(ekstraktiKodpecoIdoj);
+    kodajPeco.infanoj = komencoFinoLegFunkcio(ĉeno, true, kodajPeco);
+    kodajPeco.infanoj.map(postproceso);
+    kodajPeco.infanoj.map(ekstraktiKodpecoIdoj);
   }
 };
 
@@ -205,8 +205,8 @@ const purigiMetadatenojn = (kodopeco) => {
     delete kodopeco.normalaVokadaNotacio;
   }
 
-  if (kodopeco.infanojn) {
-    kodopeco.infanojn = kodopeco.infanojn.map(purigiMetadatenojn);
+  if (kodopeco.infanoj) {
+    kodopeco.infanoj = kodopeco.infanoj.map(purigiMetadatenojn);
   }
 
   return kodopeco;
@@ -285,9 +285,9 @@ const tradukiKomandojn = (komandojn, npl) => {
 
   return komandojn.map(komando => {
     if (komando.tipo == 'listo') {
-      komando.infanojn = tradukiKomandojn(komando.infanojn, npl);
-      if (npl[komando.infanojn[0].valoro]) {
-        komando.infanojn[0].valoro = npl[komando.infanojn[0].valoro];
+      komando.infanoj = tradukiKomandojn(komando.infanoj, npl);
+      if (npl[komando.infanoj[0].valoro]) {
+        komando.infanoj[0].valoro = npl[komando.infanoj[0].valoro];
       }
     }
 

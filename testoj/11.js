@@ -12,15 +12,15 @@ revena
 helpanto.asertiLaEligonDeLaKodoobjektoj("testoj/11/11.np", `[
   {
     tipo: 'listo',
-    infanojn: [
+    infanoj: [
       { tipo: 'datumo', valoro: 'voki-funkcion' },
       {
         tipo: 'listo',
-        infanojn: [
+        infanoj: [
           { tipo: 'datumo', valoro: 'krei-funkcion' },
           {
             tipo: 'listo',
-            infanojn: [
+            infanoj: [
               { tipo: 'datumo', valoro: 'eligi' },
               { tipo: 'datumo', valoro: '11' }
             ]

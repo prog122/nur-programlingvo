@@ -6,20 +6,20 @@ const sekvaRegistro = () => {
 
 const verkiloDeKodoobjektoj = (kodobjekto) => {
   if (kodobjekto.tipo == 'listo') {
-    if (kodobjekto.infanojn.every(infano => { return infano.tipo == 'datumo'; })) {
-      kodobjekto.kodobjektoj = [kodobjekto.infanojn.map(inf => {
+    if (kodobjekto.infanoj.every(infano => { return infano.tipo == 'datumo'; })) {
+      kodobjekto.kodobjektoj = [kodobjekto.infanoj.map(inf => {
         return inf.valoro;
       })];
 
       return kodobjekto;
     }
 
-    if (kodobjekto.infanojn[0].tipo == 'datumo' && kodobjekto.infanojn[0].valoro == 'krei-funkcion') {
+    if (kodobjekto.infanoj[0].tipo == 'datumo' && kodobjekto.infanoj[0].valoro == 'krei-funkcion') {
       const registro = sekvaRegistro();
-      kodobjekto.infanojn = kodobjekto.infanojn.map(verkiloDeKodoobjektoj)
+      kodobjekto.infanoj = kodobjekto.infanoj.map(verkiloDeKodoobjektoj)
       kodobjekto.registro = registro;
       kodobjekto.kodobjektoj = [['difini-fermaĵo', registro]];
-      kodobjekto.infanojn.slice(1).map((ko) => {
+      kodobjekto.infanoj.slice(1).map((ko) => {
         kodobjekto.kodobjektoj = kodobjekto.kodobjektoj.concat(ko.kodobjektoj);
       });
       kodobjekto.kodobjektoj = kodobjekto.kodobjektoj.concat([['fini-difinon-de-fermaĵo']]);
@@ -27,13 +27,13 @@ const verkiloDeKodoobjektoj = (kodobjekto) => {
       return kodobjekto;
     }
 
-    if (kodobjekto.infanojn[0].tipo == 'datumo' && kodobjekto.infanojn[0].valoro == 'voki-funkcion') {
-      kodobjekto.infanojn = kodobjekto.infanojn.map(verkiloDeKodoobjektoj)
-      kodobjekto.kodobjektoj = kodobjekto.infanojn[1].kodobjektoj.concat([['voki', kodobjekto.infanojn[1].registro]]);
+    if (kodobjekto.infanoj[0].tipo == 'datumo' && kodobjekto.infanoj[0].valoro == 'voki-funkcion') {
+      kodobjekto.infanoj = kodobjekto.infanoj.map(verkiloDeKodoobjektoj)
+      kodobjekto.kodobjektoj = kodobjekto.infanoj[1].kodobjektoj.concat([['voki', kodobjekto.infanoj[1].registro]]);
       return kodobjekto;
     }
 
-    return kodobjekto.infanojn.map(verkiloDeKodoobjektoj);
+    return kodobjekto.infanoj.map(verkiloDeKodoobjektoj);
   }
 
   return kodobjekto;

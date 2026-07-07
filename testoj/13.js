@@ -13,22 +13,22 @@ revena
 helpanto.asertiLaEligonDeLaKodoobjektoj("testoj/13/13.np", `[
   {
     tipo: 'listo',
-    infanojn: [
+    infanoj: [
       { tipo: 'datumo', valoro: 'voki-funkcion' },
       {
         tipo: 'listo',
-        infanojn: [
+        infanoj: [
           { tipo: 'datumo', valoro: 'krei-funkcion' },
           {
             tipo: 'listo',
-            infanojn: [
+            infanoj: [
               { tipo: 'datumo', valoro: 'eligi' },
               { tipo: 'datumo', valoro: '13' }
             ]
           },
           {
             tipo: 'listo',
-            infanojn: [
+            infanoj: [
               { tipo: 'datumo', valoro: 'eligi' },
               { tipo: 'datumo', valoro: '13-2' }
             ]

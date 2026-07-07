@@ -5,7 +5,7 @@ helpanto.asertiLaEligonDeLaIDVM("testoj/6/6.np", "eligi 6\nrevena\n");
 helpanto.asertiLaEligonDeLaKodoobjektoj("testoj/6/6.np", `[
   {
     tipo: 'listo',
-    infanojn: [
+    infanoj: [
       { tipo: 'datumo', valoro: 'eligi' },
       { tipo: 'datumo', valoro: '6' }
     ]
