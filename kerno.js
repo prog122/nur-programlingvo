@@ -34,9 +34,9 @@ const estasKomencoDeBloko = (ĉeno, i) => {
   return ĉeno[i] != ' ';
 };
 
-const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfanojn, antaŭaPecoDeKodo) => {
-  if (i != komencoIndekso && komencoDatumo.finaSimbolo) {
-    if (komencoDatumo.finaSimbolo == ĉeno[i]) {
+const estasFinoDeBloko = (ĉeno, i, komencaIndekso, komencaDatumo, serĉanteInfanojn, antaŭaPecoDeKodo) => {
+  if (i != komencaIndekso && komencaDatumo.finaSimbolo) {
+    if (komencaDatumo.finaSimbolo == ĉeno[i]) {
       return true;
     }
   }
@@ -44,7 +44,7 @@ const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfa
   let estasFinita = i == ĉeno.length - 1;
   if (!estasFinita && serĉanteInfanojn) {
     estasFinita = ((estasMalplena(antaŭaPecoDeKodo) || antaŭaPecoDeKodo.kodoKomenciĝis)
-                  && (ĉeno[i + 1] == ' ' || ĉeno[i + 1] == "\n") && !komencoDatumo.finaSimbolo)
+                  && (ĉeno[i + 1] == ' ' || ĉeno[i + 1] == "\n") && !komencaDatumo.finaSimbolo)
       || ((ĉeno[i] != ' ')
           && !!simbolojDeBloko.find((tabelo) => {
             return tabelo[2] && tabelo[2].estasKodbloko && tabelo[0] == ĉeno[i + 1];
@@ -54,20 +54,20 @@ const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfa
   return estasFinita;
 };
 
-const finoDeBlokoDatumo = (ĉeno, i, komencoIndekso, komencoDatumo, antaŭaPecoDeKodo) => {
+const finoDeBlokoDatumo = (ĉeno, i, komencaIndekso, komencaDatumo, antaŭaPecoDeKodo) => {
   let normalaVokadaNotacio = !!simbolojDeBloko.find((tabelo) => {
     return tabelo[2] && tabelo[2].estasKodbloko && tabelo[0] == ĉeno[i + 1];
   });
 
-  const rezultaĈeno = ĉeno.slice(komencoIndekso, i + 1);
+  const rezultaĈeno = ĉeno.slice(komencaIndekso, i + 1);
   return {
     ĉeno: rezultaĈeno,
-    komencoIndekso: komencoIndekso,
+    komencaIndekso: komencaIndekso,
     finoIndekso: i + 1,
-    komencoDatumo: komencoDatumo,
+    komencaDatumo: komencaDatumo,
     normalaVokadaNotacio: normalaVokadaNotacio,
     estasKomencaElemento: estasMalplena(antaŭaPecoDeKodo),
-    kodoKomenciĝis: antaŭaPecoDeKodo.kodoKomenciĝis || ĉeno[komencoIndekso] == '"',
+    kodoKomenciĝis: antaŭaPecoDeKodo.kodoKomenciĝis || ĉeno[komencaIndekso] == '"',
     estasAtomara:
       antaŭaPecoDeKodo.normalaVokadaNotacio
         ? (rezultaĈeno[0] == '(' && rezultaĈeno[rezultaĈeno.length - 1] == ')' && rezultaĈeno.slice(1, -1).indexOf('(') == -1)
@@ -76,14 +76,14 @@ const finoDeBlokoDatumo = (ĉeno, i, komencoIndekso, komencoDatumo, antaŭaPecoD
 }
 
 const ekstraktiLaSekvanKodajPeco = (ĉeno, serĉanteInfanojn = false, gepatro = {}, antaŭaPecoDeKodo = {}) => {
-  let komencoIndekso = -1;
-  let komencoDatumo = {};
+  let komencaIndekso = -1;
+  let komencaDatumo = {};
   let internaBloknombro = 0;
 
   for (let i=0;i < ĉeno.length;i++) {
-    if (komencoIndekso == -1 && estasKomencoDeBloko(ĉeno, i)) {
-      komencoIndekso = i;
-      komencoDatumo = {
+    if (komencaIndekso == -1 && estasKomencoDeBloko(ĉeno, i)) {
+      komencaIndekso = i;
+      komencaDatumo = {
         komencaSimbolo: null,
         finaSimbolo: null
       };
@@ -93,15 +93,15 @@ const ekstraktiLaSekvanKodajPeco = (ĉeno, serĉanteInfanojn = false, gepatro = 
         let [komencoS, finoS, opcioj] = datumo;
 
         if (ĉeno[i] == komencoS) {
-          komencoDatumo.komencaSimbolo = komencoS;
-          komencoDatumo.finaSimbolo = finoS
+          komencaDatumo.komencaSimbolo = komencoS;
+          komencaDatumo.finaSimbolo = finoS
 
           if (opcioj.estasKodbloko) {
             internaBloknombro++;
           }
         }
       });
-    } else if(komencoIndekso != -1) {
+    } else if(komencaIndekso != -1) {
       // Eblas optimumigi, haltigante la map ĉe la unua kongruo
       simbolojDeBloko.map((datumo) => {
         let [komencoS, finoS, opcioj] = datumo;
@@ -118,8 +118,8 @@ const ekstraktiLaSekvanKodajPeco = (ĉeno, serĉanteInfanojn = false, gepatro = 
       });
     }
 
-    if (internaBloknombro == 0 && estasFinoDeBloko(ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfanojn, antaŭaPecoDeKodo)) {
-      let datumo = finoDeBlokoDatumo(ĉeno, i, komencoIndekso, komencoDatumo, antaŭaPecoDeKodo);
+    if (internaBloknombro == 0 && estasFinoDeBloko(ĉeno, i, komencaIndekso, komencaDatumo, serĉanteInfanojn, antaŭaPecoDeKodo)) {
+      let datumo = finoDeBlokoDatumo(ĉeno, i, komencaIndekso, komencaDatumo, antaŭaPecoDeKodo);
       return datumo;
     }
   }
@@ -156,9 +156,9 @@ const komencoFinoLegFunkcio = (ĉeno, serĉanteInfanojn = false, gepatro = {}) =
 };
 
 const postproceso = (kodajPeco) => {
-  if (kodajPeco.komencoDatumo.finaSimbolo && !kodajPeco.postprocesaOkazis) {
+  if (kodajPeco.komencaDatumo.finaSimbolo && !kodajPeco.postprocesaOkazis) {
     let finaSimboloEl = simbolojDeBloko.find((el) => {
-      return el[1] == kodajPeco.komencoDatumo.finaSimbolo;
+      return el[1] == kodajPeco.komencaDatumo.finaSimbolo;
     });
 
     if (finaSimboloEl.length > 2 && finaSimboloEl[2].postproceso) {
