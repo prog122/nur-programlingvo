@@ -35,8 +35,8 @@ const estasKomencoDeBloko = (ĉeno, i) => {
 };
 
 const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfanojn, antaŭaPecoDeKodo) => {
-  if (i != komencoIndekso && komencoDatumo.finaSymbolo) {
-    if (komencoDatumo.finaSymbolo == ĉeno[i]) {
+  if (i != komencoIndekso && komencoDatumo.finaSimbolo) {
+    if (komencoDatumo.finaSimbolo == ĉeno[i]) {
       return true;
     }
   }
@@ -44,7 +44,7 @@ const estasFinoDeBloko = (ĉeno, i, komencoIndekso, komencoDatumo, serĉanteInfa
   let estasFinita = i == ĉeno.length - 1;
   if (!estasFinita && serĉanteInfanojn) {
     estasFinita = ((estasMalplena(antaŭaPecoDeKodo) || antaŭaPecoDeKodo.kodoKomenciĝis)
-                  && (ĉeno[i + 1] == ' ' || ĉeno[i + 1] == "\n") && !komencoDatumo.finaSymbolo)
+                  && (ĉeno[i + 1] == ' ' || ĉeno[i + 1] == "\n") && !komencoDatumo.finaSimbolo)
       || ((ĉeno[i] != ' ')
           && !!simbolojDeBloko.find((tabelo) => {
             return tabelo[2] && tabelo[2].estasKodbloko && tabelo[0] == ĉeno[i + 1];
@@ -85,7 +85,7 @@ const ekstraktiLaSekvanKodajPeco = (ĉeno, serĉanteInfanojn = false, gepatro = 
       komencoIndekso = i;
       komencoDatumo = {
         komencaSimbolo: null,
-        finaSymbolo: null
+        finaSimbolo: null
       };
 
       // Eblas optimumigi, haltigante la map ĉe la unua kongruo
@@ -94,7 +94,7 @@ const ekstraktiLaSekvanKodajPeco = (ĉeno, serĉanteInfanojn = false, gepatro = 
 
         if (ĉeno[i] == komencoS) {
           komencoDatumo.komencaSimbolo = komencoS;
-          komencoDatumo.finaSymbolo = finoS
+          komencoDatumo.finaSimbolo = finoS
 
           if (opcioj.estasKodbloko) {
             internaBloknombro++;
@@ -156,15 +156,15 @@ const komencoFinoLegFunkcio = (ĉeno, serĉanteInfanojn = false, gepatro = {}) =
 };
 
 const postproceso = (kodajPeco) => {
-  if (kodajPeco.komencoDatumo.finaSymbolo && !kodajPeco.postprocesaOkazis) {
-    let finaSymboloEl = simbolojDeBloko.find((el) => {
-      return el[1] == kodajPeco.komencoDatumo.finaSymbolo;
+  if (kodajPeco.komencoDatumo.finaSimbolo && !kodajPeco.postprocesaOkazis) {
+    let finaSimboloEl = simbolojDeBloko.find((el) => {
+      return el[1] == kodajPeco.komencoDatumo.finaSimbolo;
     });
 
-    if (finaSymboloEl.length > 2 && finaSymboloEl[2].postproceso) {
+    if (finaSimboloEl.length > 2 && finaSimboloEl[2].postproceso) {
       kodajPeco.originaĈeno = kodajPeco.ĉeno;
       kodajPeco.postprocesaOkazis = vera;
-      kodajPeco.ĉeno = finaSymboloEl[2].postproceso(kodajPeco.ĉeno);
+      kodajPeco.ĉeno = finaSimboloEl[2].postproceso(kodajPeco.ĉeno);
     }
   }
 
